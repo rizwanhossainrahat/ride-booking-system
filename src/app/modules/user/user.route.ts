@@ -1,9 +1,12 @@
 import { Router } from "express";
 import { userController } from "./user.controller";
+import { checkAuth } from "../../middleware/checkAuth";
+import { Role } from "./user.interface";
 
 
 const router=Router();
 
 router.post("/register",userController.createUser)
+router.get("/",checkAuth([Role.ADMIN]),userController.getAllUser)
 
 export const UserRouters=router
