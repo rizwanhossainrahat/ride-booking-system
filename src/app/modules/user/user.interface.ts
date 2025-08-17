@@ -24,6 +24,7 @@ export interface IAddress{
 }
 
 export interface IUser{
+    _id?:Types.ObjectId
     name:string,
     email:string,
     password?:string,
@@ -37,6 +38,5 @@ export interface IUser{
     type: IVehicle,
     number: string; 
    };
-//  vehicle?:IVehicle,
-  ratings?:number
+
 }
