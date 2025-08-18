@@ -5,6 +5,7 @@ import { sendResponse } from "../../utils/sendResponse";
 import { StatusCodes } from "http-status-codes";
 import AppError from "../../error/AppError";
 import { setAuthCookie } from "../../utils/setCookie";
+import { JwtPayload } from "jsonwebtoken";
 
 const creadentialsLogin=catchAsync(async(req: Request, res: Response, next: NextFunction)=>{
     const loginInfo=await authservices.credentialsLogin(req.body)
@@ -59,8 +60,25 @@ const logout=catchAsync(async(req: Request, res: Response, next: NextFunction)=>
     })
 })
 
+const changePassword=catchAsync(async(req: Request, res: Response, next: NextFunction)=>{
+  
+    const decodedToken=req.user;
+    
+    const {oldPassword,newPassword}=req.body
+
+    const user=await authservices.changePassword(decodedToken ,oldPassword,newPassword) 
+
+     sendResponse(res, {
+        success: true,
+        statusCode: StatusCodes.ACCEPTED,
+        message: "Password change Successfully",
+        data: null,
+    })
+})
+
 export const authContoller={
     creadentialsLogin,
     getNewAccessToken,
-    logout
+    logout,
+    changePassword
 }

@@ -6,14 +6,16 @@ import { envVars } from "../config/env";
 import { User } from "../modules/user/user.model";
 import { verifyToken } from "../utils/jwt";
 
-export const checkAuth=(role:string[])=>async(req: Request, res: Response, next: NextFunction)=>{
+export const checkAuth=(...role:string[])=>async(req: Request, res: Response, next: NextFunction)=>{
 
     const token=req.headers.authorization;
+    
     if(!token){
         throw new AppError(StatusCodes.BAD_REQUEST,"Authorization header not found")
     }
 
-    const isVerified=verifyToken(token,envVars.JWT_ACCESS_SECRET)
+    const isVerified=verifyToken(token,envVars.JWT_ACCESS_SECRET) as JwtPayload
+
 
     const isUserExist=await User.findOne({email:isVerified.email})
 
@@ -25,5 +27,7 @@ export const checkAuth=(role:string[])=>async(req: Request, res: Response, next:
     throw new AppError(401, "You can't access this route");
    }
    
+   req.user=isVerified
+
    next()
 }

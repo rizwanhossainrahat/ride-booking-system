@@ -1,9 +1,9 @@
 import AppError from "../../error/AppError"
 import { IUser } from "../user/user.interface"
 import { User } from "../user/user.model"
-import httpStatus from "http-status-codes";
+import httpStatus, { StatusCodes } from "http-status-codes";
 import bcryptjs from "bcryptjs";
-import jwt, { SignOptions } from "jsonwebtoken"
+import jwt, { JwtPayload, SignOptions } from "jsonwebtoken"
 import { envVars } from "../../config/env";
 import { createNewAccessTokenWithRefreshToken, createUserToken } from "../../utils/userToken";
 
@@ -39,7 +39,24 @@ const getNewAccessToken=async(refreshToken:string)=>{
    }
 } 
 
+const changePassword=async(decodedToken:JwtPayload,oldPassword:string,newPassword:string)=>{
+    const isUserExist=await User.findOne({email:decodedToken.email})
+    if(!isUserExist){
+        throw new AppError(StatusCodes.BAD_REQUEST,"Unauthorized user")
+    }
+
+    const isPasswordMatch=await bcryptjs.compare(oldPassword,isUserExist.password as string)
+    if(!isPasswordMatch){
+         throw new AppError(StatusCodes.BAD_REQUEST,"Password does not match")
+    }
+
+    isUserExist.password=await bcryptjs.hash(newPassword,10)
+    isUserExist.save()
+
+} 
+
 export const authservices={
     credentialsLogin,
-    getNewAccessToken
+    getNewAccessToken,
+    changePassword
 }
