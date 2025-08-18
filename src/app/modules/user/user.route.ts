@@ -7,6 +7,6 @@ import { Role } from "./user.interface";
 const router=Router();
 
 router.post("/register",userController.createUser)
-router.get("/",checkAuth([Role.ADMIN]),userController.getAllUser)
+router.get("/",checkAuth(Role.ADMIN),userController.getAllUser)
 
 export const UserRouters=router
