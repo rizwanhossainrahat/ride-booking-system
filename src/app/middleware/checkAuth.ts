@@ -9,14 +9,14 @@ import { verifyToken } from "../utils/jwt";
 export const checkAuth=(...role:string[])=>async(req: Request, res: Response, next: NextFunction)=>{
 
     const token=req.headers.authorization;
-    
+ 
     if(!token){
         throw new AppError(StatusCodes.BAD_REQUEST,"Authorization header not found")
     }
 
     const isVerified=verifyToken(token,envVars.JWT_ACCESS_SECRET) as JwtPayload
 
-
+   
     const isUserExist=await User.findOne({email:isVerified.email})
 
     if(!isUserExist){

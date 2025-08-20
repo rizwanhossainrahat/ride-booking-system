@@ -23,6 +23,13 @@ export interface IAddress{
   city?:string;
 }
 
+export enum  DriverStatus{
+    ACTIVE="ACTIVE",
+    ONRIDE="ONRIDE",
+    OFLINE="OFLINE"
+}
+
+
 export interface IUser{
     _id?:Types.ObjectId
     name:string,
@@ -32,11 +39,12 @@ export interface IUser{
     role?:Role,
     isVerified?: boolean,
     isActive?:IsActive,
-    currentLocation?: IAddress,
-    destination?:IAddress,
-    vehicle?: {
-    type: IVehicle,
-    number: string; 
-   };
+
+
+    vehicle?:IVehicle
+    licenseNumber?: string,
+    vehicleNumber?:string,
+    driverStatus?:DriverStatus,
+    rating?: number;
 
 }

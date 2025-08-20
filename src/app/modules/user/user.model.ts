@@ -1,8 +1,8 @@
 import { model, Schema } from "mongoose";
-import { IsActive, IUser, Role } from "./user.interface";
+import { DriverStatus, IsActive, IUser, IVehicle, Role } from "./user.interface";
 
 const userSchema=new Schema<IUser>({
-    name:{type:String,required:true},
+    name:{type:String,required:true,trim:true},
     email:{type:String,required:true,unique:true},
     password:{type:String},
     phone:{type:String},
@@ -17,10 +17,24 @@ const userSchema=new Schema<IUser>({
         enum:Object.values(IsActive),
         default:IsActive.ACTIVE
     },
-    currentLocation:{ type:String},
-    destination:{ type:String},
-    vehicle:{type:String},
-    ratings:{type:String}
+    vehicle:{
+        type:String,
+        enum:Object.values(IVehicle),
+    }, 
+    licenseNumber:{
+        type:String
+    },
+    vehicleNumber:{
+        type:String
+    },
+    driverStatus:{
+        type:String,
+        enum:Object.values(DriverStatus),
+        default:DriverStatus.ACTIVE
+    },
+    rating:{
+        type:Number,
+    }
 },{
     versionKey:false,
     timestamps:true
