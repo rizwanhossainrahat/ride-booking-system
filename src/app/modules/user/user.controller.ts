@@ -29,7 +29,6 @@ const getAllUser=catchAsync(async(req: Request, res: Response, next: NextFunctio
    })
 })
 
-
 const updateUser=catchAsync(async(req: Request, res: Response, next: NextFunction)=>{
   const userId=req.params.id
   const verfiedToken=req.user

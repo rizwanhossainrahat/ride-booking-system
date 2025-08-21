@@ -5,16 +5,22 @@ import { IStatus } from "../ride/ride.interface"
 import { JwtPayload } from "jsonwebtoken"
 import { User } from "../user/user.model"
 import { DriverStatus } from "../user/user.interface"
+import { Payment } from "../payment/payment.model"
 
 const acceptRide=async(rideId:string,decodedToken:JwtPayload)=>{
+      const driverId=decodedToken.userId
     const ride=await Ride.findById(rideId)
-    const driverId=decodedToken.userId
+    const payment=await Payment.findOne({ride:rideId})
     const isDriverExists=await User.findById(driverId)
     if(!ride){
         throw new AppError(StatusCodes.BAD_REQUEST,"This ride is not exits")
     }
     if(!isDriverExists){
         throw new AppError(StatusCodes.BAD_REQUEST,"This driver is not exits")
+    }
+
+     if(!payment){
+         throw new AppError(StatusCodes.BAD_REQUEST,"Payment does not create")
     }
 
    const riderDetails=await User.findById(ride.rider) 
@@ -28,11 +34,13 @@ const acceptRide=async(rideId:string,decodedToken:JwtPayload)=>{
    const {password:pass,...driver}=isDriverExists.toObject()
    const {password,...rider}=riderDetails?.toObject()
 
+   payment.driver=decodedToken.userId
+
    ride.save()
    isDriverExists.save()
 
    riderDetails.save()
-
+    payment.save()
    return {
        ride,
        rider
