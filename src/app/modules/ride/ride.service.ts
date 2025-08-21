@@ -4,17 +4,56 @@ import { Ride } from "./ride.model"
 import AppError from "../../error/AppError"
 import { StatusCodes } from "http-status-codes"
 import { JwtPayload } from "jsonwebtoken"
-
+import { calculateDistance } from "../../utils/calculateDistance"
+import { Role } from "../user/user.interface"
+import { Payment } from "../payment/payment.model"
+import { getTransactionId } from "../../utils/getTransectionId"
 
 const createRide=async(payload:IRide,decodedToken:JwtPayload)=>{
     const riderId=decodedToken.userId
-      
+    const {pickUpLocation,dropOffLocation}=payload
+      if (!decodedToken) {
+        throw new AppError(StatusCodes.UNAUTHORIZED, 'Your are unauthorized');
+    }
+
+    if (decodedToken.isBlocked) {
+        throw new AppError(StatusCodes.FORBIDDEN, 'Your account is blocked');
+    }
+
+    if (decodedToken.role !== Role.RIDER) {
+        throw new AppError(StatusCodes.FORBIDDEN, 'Only riders can create rides');
+    }
+
+    const distanceCalculate = calculateDistance(
+        pickUpLocation.lat,
+        pickUpLocation.lng,
+        dropOffLocation.lat,
+        dropOffLocation.lng
+    );
+
+    const distance = `${distanceCalculate.toFixed(2)}km`;
+    const rideCost = Math.ceil(distanceCalculate * 20);
+
      const ride=await Ride.create({
         ...payload,
-        rider:riderId
+        rider:riderId,
+        distance,
+        rideCost
      })
 
-      return ride
+     const transactionId=getTransactionId()
+
+     const payment=await Payment.create({
+        ride:ride._id,
+        rider:riderId,
+        amount:rideCost,
+        transactionId:transactionId
+     })
+
+      return {
+        ride,
+        payment
+      }
 }
 
 const deleteRide=async(rideId:string,decodedToken:JwtPayload)=>{

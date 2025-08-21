@@ -12,4 +12,6 @@ router.delete("/delete-ride/:id",checkAuth(Role.RIDER),rideController.deleteRide
 router.get("/all-ride",checkAuth(Role.RIDER),rideController.getAllRide)
 router.get("/all-ride-admin",checkAuth(Role.ADMIN),rideController.getAllRideAdmin)
 
+// cancel ride
+
 export const  RideRouters=router
