@@ -1,5 +1,5 @@
 import cors from "cors"
-import  express, { Request, Response ,NextFunction} from "express";
+import  express, { Request, Response } from "express";
 import { router } from "./routes";
 import { notFound } from "./app/middleware/notFound";
 import {globalErrorHandler } from "./app/middleware/globalErrorHandler";

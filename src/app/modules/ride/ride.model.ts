@@ -67,7 +67,7 @@ rideSchema.pre('save', function (next) {
         destination.lng
     );
 
-    console.log(`Calculated distance: ${distance} km`);
+   
     this.rideCost = Math.ceil(distance * 20);
 
     next();

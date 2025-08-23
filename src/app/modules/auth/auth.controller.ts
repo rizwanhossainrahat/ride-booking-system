@@ -5,7 +5,7 @@ import { sendResponse } from "../../utils/sendResponse";
 import { StatusCodes } from "http-status-codes";
 import AppError from "../../error/AppError";
 import { setAuthCookie } from "../../utils/setCookie";
-import { JwtPayload } from "jsonwebtoken";
+
 
 const creadentialsLogin=catchAsync(async(req: Request, res: Response, next: NextFunction)=>{
     const loginInfo=await authservices.credentialsLogin(req.body)

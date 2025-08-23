@@ -3,8 +3,7 @@ import { IUser } from "../user/user.interface"
 import { User } from "../user/user.model"
 import httpStatus, { StatusCodes } from "http-status-codes";
 import bcryptjs from "bcryptjs";
-import jwt, { JwtPayload, SignOptions } from "jsonwebtoken"
-import { envVars } from "../../config/env";
+import { JwtPayload } from "jsonwebtoken"
 import { createNewAccessTokenWithRefreshToken, createUserToken } from "../../utils/userToken";
 
 const credentialsLogin=async(payload:Partial<IUser>)=>{

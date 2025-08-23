@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import { StatusCodes } from "http-status-codes"
 import AppError from "../error/AppError";
 import { envVars } from "../config/env";
 import { TErrorSources } from "../interface/error.types";

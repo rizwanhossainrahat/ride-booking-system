@@ -41,7 +41,7 @@ const sslPaymentInit=async(payload:ISSLCommerz)=>{
             ship_postcode: 1000,
             ship_country: "N/A",
     }
-    console.log(`${envVars.SSL.SSL_FAIL_BACKEND_URL}?transactionId=${payload.transactionId}&amount=${payload.amount}&status=fail`)
+    
 
     const response=await axios({
         method:"POST",

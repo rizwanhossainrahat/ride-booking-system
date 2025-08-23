@@ -3,7 +3,7 @@ import app from "./app";
 import { envVars } from "./app/config/env";
 import mongoose from "mongoose";
 
-let server:Server
+let server:Server;
 
 const startServer=async()=>{
     try {

@@ -13,7 +13,7 @@ export interface IPayment{
     ride?:Types.ObjectId,
     driver?:Types.ObjectId,
     rider:Types.ObjectId,
-    amount:Number,
-    transactionId:String
+    amount:number,
+    transactionId:string
     paymentState?:IPaymentState
 }

@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from "express";
 import { sendResponse } from "../../utils/sendResponse";
 import { StatusCodes } from "http-status-codes";
 import { rideServices } from "./ride.service";
-import { JwtPayload } from "jsonwebtoken";
+
 
 const createRide=catchAsync(async(req: Request, res: Response, next: NextFunction)=>{
     const verifiedToken=req.user

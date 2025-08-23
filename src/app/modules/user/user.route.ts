@@ -4,7 +4,7 @@ import { checkAuth } from "../../middleware/checkAuth";
 import { Role } from "./user.interface";
 import { validateRequest } from "../../middleware/validateRequest";
 import { creatUserZodSchema, UserUpdateZodSchema } from "./user.validation";
-import { object } from "zod";
+
 
 
 const router=Router();

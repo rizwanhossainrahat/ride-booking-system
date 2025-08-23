@@ -1,6 +1,6 @@
 import { envVars } from "../config/env"
 import { IsActive, IUser } from "../modules/user/user.interface"
-import jwt, { JwtPayload, SignOptions } from "jsonwebtoken"
+import  { JwtPayload } from "jsonwebtoken"
 import { generateToken, verifyToken } from "./jwt"
 import { User } from "../modules/user/user.model"
 import AppError from "../error/AppError"

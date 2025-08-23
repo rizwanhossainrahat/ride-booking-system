@@ -1,6 +1,4 @@
-import { StatusCodes } from "http-status-codes"
-import AppError from "../../error/AppError"
-import { IPaymentStatus, IStatus } from "../ride/ride.interface"
+import { IPaymentStatus } from "../ride/ride.interface"
 import { Ride } from "../ride/ride.model"
 import { IPaymentState } from "./payment.interface"
 import { Payment } from "./payment.model"
@@ -63,12 +61,10 @@ const cancelPayment=async(query:Record<string, string>)=>{
 }
 
 
-const initPayment=()=>{
 
-}
 
 export const paymentService={
-    initPayment,
+   
     successPayment,
     failPayment,
     cancelPayment
