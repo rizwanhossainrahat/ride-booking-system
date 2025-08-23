@@ -2,7 +2,7 @@ import { Types } from "mongoose";
 
 export enum IPaymentState{
   PENDING = "PENDING",       
-  SUCCESS = "SUCCESS",      
+  PAID = "PAID",      
   FAILED ="FAILED",         
   CANCELLED = "CANCELLED",   
   REFUNDED ="REFUNDED" 
@@ -10,7 +10,7 @@ export enum IPaymentState{
 
 export interface IPayment{
     _id?:Types.ObjectId,
-    ride:Types.ObjectId,
+    ride?:Types.ObjectId,
     driver?:Types.ObjectId,
     rider:Types.ObjectId,
     amount:Number,

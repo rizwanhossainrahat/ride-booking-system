@@ -5,7 +5,7 @@ const paymentSchema=new Schema<IPayment>({
    ride: {
       type: Schema.Types.ObjectId,   
       ref: "Ride",                   
-      required: true,
+      
     },
     driver: {
       type: Schema.Types.ObjectId,   
