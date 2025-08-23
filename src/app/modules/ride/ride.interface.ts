@@ -20,7 +20,7 @@ export enum IPaymentStatus{
 }
 
 export interface IRide{
-    _id:Types.ObjectId,
+    _id?:Types.ObjectId,
     rider?:Types.ObjectId,
     driver?:Types.ObjectId,
     vehicle?:IVehicle,

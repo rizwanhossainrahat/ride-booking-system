@@ -1,20 +1,39 @@
 import { catchAsync } from "../../utils/catchAsycn";
 import { NextFunction, Request, Response } from "express";
-import { sendResponse } from "../../utils/sendResponse";
-import { StatusCodes } from "http-status-codes";
 import { paymentService } from "./payment.service";
+import { envVars } from "../../config/env";
 
-const initPayment=catchAsync(async(req: Request, res: Response, next: NextFunction)=>{
-    const payment=await paymentService.initPayment() 
-
-    sendResponse(res,{
-        success:true,
-        statusCode:StatusCodes.CREATED,
-        message:"Payment created successfully",
-        data:""
-    })
+const successPayment=catchAsync(async (req: Request, res: Response)=>{
+    const query=req.query;
+    
+    const result=await paymentService.successPayment(query as Record<string, string>);
+     if (result?.success) {
+        res.redirect(`${envVars.SSL.SSL_SUCCESS_FRONTEND_URL}?transactionId=${query.transactionId}&message=${result?.message}&amount=${query.amount}&status=${query.status}`)
+    }
 })
 
+const failPayment=catchAsync(async (req: Request, res: Response)=>{
+    const query=req.query;
+    const result=await paymentService.failPayment(query as Record<string, string>);
+
+     if (!result?.success) {
+        res.redirect(`${envVars.SSL.SSL_FAIL_FRONTEND_URL}?transactionId=${query.transactionId}&message=${result?.message}&amount=${query.amount}&status=${query.status}`)
+    }
+})
+
+const cancelPayment=catchAsync(async (req: Request, res: Response)=>{
+    const query=req.query;
+    const result=await paymentService.cancelPayment(query as Record<string, string>);
+
+     if (!result?.success) {
+        res.redirect(`${envVars.SSL.SSL_FAIL_FRONTEND_URL}?transactionId=${query.transactionId}&message=${result?.message}&amount=${query.amount}&status=${query.status}`)
+    }
+})
+
+
+
 export const paymentController={
-    initPayment
+    successPayment,
+    failPayment,
+    cancelPayment
 }

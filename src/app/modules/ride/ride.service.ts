@@ -8,10 +8,24 @@ import { calculateDistance } from "../../utils/calculateDistance"
 import { Role } from "../user/user.interface"
 import { Payment } from "../payment/payment.model"
 import { getTransactionId } from "../../utils/getTransectionId"
+import { sslService } from "../sslCommerz/sslCommerz.service"
+import { ISSLCommerz } from "../sslCommerz/sslCommerz.interface"
+import { User } from "../user/user.model"
 
 const createRide=async(payload:IRide,decodedToken:JwtPayload)=>{
     const riderId=decodedToken.userId
-    const {pickUpLocation,dropOffLocation}=payload
+    const isUserExist=await User.findById(riderId)
+    if(!isUserExist){
+        throw new AppError(StatusCodes.BAD_REQUEST,"user does not exist")
+    }
+    const {email,name,phone}=isUserExist
+    const transactionId=getTransactionId()
+
+    const session=await Ride.startSession()
+    session.startTransaction()
+
+    try {
+        const {pickUpLocation,dropOffLocation}=payload
       if (!decodedToken) {
         throw new AppError(StatusCodes.UNAUTHORIZED, 'Your are unauthorized');
     }
@@ -34,26 +48,46 @@ const createRide=async(payload:IRide,decodedToken:JwtPayload)=>{
     const distance = `${distanceCalculate.toFixed(2)}km`;
     const rideCost = Math.ceil(distanceCalculate * 20);
 
-     const ride=await Ride.create({
-        ...payload,
-        rider:riderId,
+    const rideData={...payload,rider:riderId,
         distance,
-        rideCost
-     })
+        rideCost}
 
-     const transactionId=getTransactionId()
+     const rideArray=await Ride.create( [rideData],{session})
 
-     const payment=await Payment.create({
-        ride:ride._id,
+     const ride=rideArray[0]
+
+     const paymentData={
+        ride:ride._id ,
         rider:riderId,
         amount:rideCost,
         transactionId:transactionId
-     })
+        }
+     const payment=await Payment.create( [paymentData],{session})
 
+     const sslPayload:ISSLCommerz={
+        amount:rideCost,
+        email:email,
+        name:name,
+        phoneNumber:phone,
+        transactionId:transactionId,
+        
+     }
+
+     const sslPayment=await sslService.sslPaymentInit(sslPayload)
+
+        await session.commitTransaction(); 
+        session.endSession()
+        
       return {
-        ride,
-        payment
+        paymentUrl:sslPayment.GatewayPageURL,
+        ride:rideArray,
+        payment:payment
       }
+    } catch (error) {
+        await session.abortTransaction(); 
+        session.endSession()
+        throw error
+    }
 }
 
 const deleteRide=async(rideId:string,decodedToken:JwtPayload)=>{

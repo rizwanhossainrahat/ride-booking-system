@@ -35,7 +35,7 @@ export interface IUser{
     name:string,
     email:string,
     password?:string,
-    phone?:string,
+    phone:number,
     role?:Role,
     isVerified?: boolean,
     isActive?:IsActive,
