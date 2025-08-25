@@ -50,7 +50,7 @@ const changePassword=async(decodedToken:JwtPayload,oldPassword:string,newPasswor
     }
 
     isUserExist.password=await bcryptjs.hash(newPassword,10)
-    isUserExist.save()
+   await  isUserExist.save()
 
 } 
 

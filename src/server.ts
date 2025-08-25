@@ -7,8 +7,11 @@ let server:Server;
 
 const startServer=async()=>{
     try {
-        await mongoose.connect(envVars.DB_URL)
+        await mongoose.connect(envVars.DB_URL,{
+            serverSelectionTimeoutMS: 30000 
+        })
         console.log(" connected to DB")
+        
         server=app.listen(envVars.PORT,()=>{
             console.log(`server is listening on port ${envVars.PORT}`)
         })

@@ -36,11 +36,11 @@ const acceptRide=async(rideId:string,decodedToken:JwtPayload)=>{
 
    payment.driver=decodedToken.userId
 
-   ride.save()
-   isDriverExists.save()
+   await ride.save()
+   await isDriverExists.save()
 
-   riderDetails.save()
-    payment.save()
+  await riderDetails.save()
+  await payment.save()
    return {
        ride,
        rider
@@ -64,8 +64,8 @@ const rejectRide=async(rideId:string,decodedToken:JwtPayload)=>{
    ride.status=IStatus.CANCEL,
    ride.driver=isDriverExists._id,
 
-   ride.save()
-   isDriverExists.save()
+   await ride.save()
+   await isDriverExists.save()
 
 
    return {
