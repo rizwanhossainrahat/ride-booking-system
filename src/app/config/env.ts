@@ -9,8 +9,9 @@ interface EnvConfig {
   JWT_ACCESS_SECRET:string,
   JWT_ACCESS_EXPIRES:string,
   JWT_REFRESH_SECRET:string,
-JWT_REFRESH_EXPIRES:string,
-EXPRESS_SESSION_SECRET:string,
+  JWT_REFRESH_EXPIRES:string,
+  EXPRESS_SESSION_SECRET:string,
+  FRONTEND_URL:string,
    SSL: {
         STORE_ID: string,
         STORE_PASS: string,
@@ -22,10 +23,11 @@ EXPRESS_SESSION_SECRET:string,
         SSL_SUCCESS_BACKEND_URL: string,
         SSL_FAIL_BACKEND_URL: string,
         SSL_CANCEL_BACKEND_URL: string,
-}
+},
+
 }
 const loadEnvVariables = (): EnvConfig => {
-  const requiredEnvVariables: string[] = ["PORT", "DB_URL", "NODE_ENV","JWT_ACCESS_SECRET","JWT_ACCESS_EXPIRES","JWT_REFRESH_SECRET","JWT_REFRESH_EXPIRES","EXPRESS_SESSION_SECRET",
+  const requiredEnvVariables: string[] = ["PORT", "DB_URL", "NODE_ENV","JWT_ACCESS_SECRET","JWT_ACCESS_EXPIRES","JWT_REFRESH_SECRET","JWT_REFRESH_EXPIRES","EXPRESS_SESSION_SECRET","FRONTEND_URL",
     "SSL_STORE_ID","SSL_STORE_PASS","SSL_PAYMENT_API","SSL_VALIDATION_API","SSL_SUCCESS_FRONTEND_URL","SSL_FAIL_FRONTEND_URL","SSL_CANCEL_FRONTEND_URL","SSL_SUCCESS_BACKEND_URL","SSL_FAIL_BACKEND_URL","SSL_CANCEL_BACKEND_URL"];
 
   requiredEnvVariables.forEach((key) => {
@@ -43,7 +45,7 @@ const loadEnvVariables = (): EnvConfig => {
     JWT_REFRESH_SECRET:process.env.JWT_REFRESH_SECRET as string,
     JWT_REFRESH_EXPIRES:process.env.JWT_REFRESH_EXPIRES as string,
     EXPRESS_SESSION_SECRET:process.env.EXPRESS_SESSION_SECRET as string,
-
+    FRONTEND_URL:process.env.FRONTEND_URL as string,
      SSL: {
             STORE_ID: process.env.SSL_STORE_ID as string,
             STORE_PASS: process.env.SSL_STORE_PASS as string,

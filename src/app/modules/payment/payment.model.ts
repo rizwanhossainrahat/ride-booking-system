@@ -16,7 +16,7 @@ const paymentSchema=new Schema<IPayment>({
       ref: "Rider",                   
       required: true,
     },
-    amount:{type:String},
+    amount:{type:Number},
     transactionId:{type:String},
     paymentState:{
       type:String,
