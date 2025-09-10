@@ -8,7 +8,7 @@ import { verifyToken } from "../utils/jwt";
 
 export const checkAuth=(...role:string[])=>async(req: Request, res: Response, next: NextFunction)=>{
 
-    const token=req.headers.authorization;
+    const token=req.headers.authorization || req.cookies.accessToken;
  
     if(!token){
         throw new AppError(StatusCodes.BAD_REQUEST,"Authorization header not found")
